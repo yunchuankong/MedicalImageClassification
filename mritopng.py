@@ -90,16 +90,21 @@ def convert_folder(mri_folder, png_folder):
                 except Exception as e:
                     print 'FAIL>', mri_file_path, '-->', png_file_path, ':', e
 
+# /labs/colab/3DDD/kaggle_data
+# if __name__ == '__main__':
+#     parser = argparse.ArgumentParser(description="Convert a dicom MRI file to png")
+#     parser.add_argument('-f', action='store_true')
+#     parser.add_argument('dicom_path', help='Full path to the mri file')
+#     parser.add_argument('png_path', help='Full path to the generated png file')
 
+#     args = parser.parse_args()
+#     print args
+#     if args.f:
+#         convert_folder(args.dicom_path, args.png_path)
+#     else:
+#         convert_file(args.dicom_path, args.png_path)
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Convert a dicom MRI file to png")
-    parser.add_argument('-f', action='store_true')
-    parser.add_argument('dicom_path', help='Full path to the mri file')
-    parser.add_argument('png_path', help='Full path to the generated png file')
-
-    args = parser.parse_args()
-    print args
-    if args.f:
-        convert_folder(args.dicom_path, args.png_path)
-    else:
-        convert_file(args.dicom_path, args.png_path)
+    args.dicom_path='/labs/colab/3DDD/kaggle_data/samp'
+    args.png_path='/labs/colab/3DDD/kaggle_data/sample_images_png'
+    convert_folder(args.dicom_path, args.png_path)
+    

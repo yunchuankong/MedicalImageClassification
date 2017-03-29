@@ -104,7 +104,7 @@ def convert_folder(mri_folder, png_folder):
 #     else:
 #         convert_file(args.dicom_path, args.png_path)
 if __name__ == '__main__':
-    args.dicom_path='/labs/colab/3DDD/kaggle_data/samp'
-    args.png_path='/labs/colab/3DDD/kaggle_data/sample_images_png'
-    convert_folder(args.dicom_path, args.png_path)
+    dicom_path='/labs/colab/3DDD/kaggle_data/samp'
+    png_path='/labs/colab/3DDD/kaggle_data/sample_images_png'
+    convert_folder(dicom_path, png_path)
     

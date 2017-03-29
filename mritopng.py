@@ -4,6 +4,7 @@ import dicom
 import argparse
 
 
+
 def mri_to_png(mri_file, png_file):
     """ Function to convert from a DICOM image to png
         @param mri_file: An opened file like object to read te dicom data

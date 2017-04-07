@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 from vgg_transfer_utils import load_scan,get_pixels_hu,normalize,triplicate,_3D_images_resize,vgg16
 
-
+# test code here
 slice_example = load_scan("example_dcm_sample/ANON_LUNG_TC001/CT")
 slice_example_pixels = get_pixels_hu(slice_example)
 normalized_example_pixels = normalize(slice_example_pixels)

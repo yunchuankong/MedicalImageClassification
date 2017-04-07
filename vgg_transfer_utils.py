@@ -11,7 +11,7 @@ class vgg16:
         self.imgs = imgs
         self.convlayers()
         self.fc_layers()
-        self.bn = tf.nn.softmax(self.fc2)
+        self.bn = self.fc2 #we use the second fully connected layer as the input for the following analysis.
         if weights is not None and sess is not None:
             self.load_weights(weights, sess)
 

@@ -8,7 +8,7 @@ reset_default_graph()
 # Parameters
 learning_rate = 0.01
 training_iters = 3000000
-batch_size = 128
+batch_size = 80
 display_step = 500
 n_embedding = 200
 n_hidden = 100 # hidden layer num of features
@@ -89,7 +89,7 @@ class DataBatchGenerator(object):
 #   MODEL
 # ==========
 
-bottle_neck_data = np.load("/labs/colab/3DDD/kaggle_data/kaggle_processed_data/resampled_transfer_learning_data.npy")
+bottle_neck_data = np.load("/labs/colab/3DDD/kaggle_data/kaggle_processed_data/resampled_transfer_learning_data_new.npy")
 bottle_neck_summary = data_summary(bottle_neck_data)
 dataset = DataBatchGenerator(bottle_neck_data,bottle_neck_summary,0.10)
 seq_max_len = bottle_neck_summary["max_seq_len"]
@@ -130,6 +130,10 @@ def dynamicRNN(x, seqlen, weights, biases):
     return tf.matmul(outputs, weights['out']) + biases['out']
 
 
+#def dynamicRNN_attention(x, seqlen, weights, biases):
+    
+
+
 pred = dynamicRNN(x, seqlen, weights, biases)
 # Define loss and optimizer
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y))
@@ -147,14 +151,12 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 # Initializing the variables
 init = tf.global_variables_initializer()
 
-
-# initialize the Session
 # Launch the graph
-#gpu_opts = tf.GPUOptions(per_process_gpu_memory_fraction=0.2)
-#gpu_options = gpu_opts
-with tf.Session(config = tf.ConfigProto(device_count = {'GPU':0})) as sess:
+#with tf.Session(config = tf.ConfigProto(device_count = {'GPU':0})) as sess:
+with tf.Session() as sess:
     sess.run(init)
     step = 1
+    test_image, test_label, test_seqlen = dataset.get_test()
     # Keep training until reach max iterations
     while step * batch_size < training_iters:
         batch_x, batch_y, batch_seqlen = dataset.next_train(batch_size)
@@ -163,19 +165,23 @@ with tf.Session(config = tf.ConfigProto(device_count = {'GPU':0})) as sess:
                                        seqlen: batch_seqlen})
         if step % display_step == 0:
             # Calculate batch accuracy
-            acc = sess.run(accuracy, feed_dict={x: batch_x, y: batch_y,
+            train_acc = sess.run(accuracy, feed_dict={x: batch_x, y: batch_y,
                                                 seqlen: batch_seqlen})
+            # Calculate test accuracy
+            test_acc = sess.run(accuracy, feed_dict={x: test_image, y: test_label,
+                                      seqlen: test_seqlen})
             # Calculate batch loss
             loss = sess.run(cost, feed_dict={x: batch_x, y: batch_y,
                                              seqlen: batch_seqlen})
-            print("Iter " + str(step*batch_size) + ", Minibatch Loss= " + \
-                  "{:.6f}".format(loss) + ", Training Accuracy= " + \
-                  "{:.5f}".format(acc))
+            print("Iter " + str(step*batch_size) + ", batch_loss= " + \
+                  "{:.6f}".format(loss) + ", train_acc= " + \
+                  "{:.5f}".format(train_acc) +", test_acc= " +\
+                 "{:.5f}".format(test_acc))
         step += 1
     print("Optimization Finished!")
 
     # Calculate accuracy
-    test_image, test_label, test_seqlen = dataset.get_test()
+    
     print("Testing Accuracy:", \
         sess.run(accuracy, feed_dict={x: test_image, y: test_label,
                                       seqlen: test_seqlen}))

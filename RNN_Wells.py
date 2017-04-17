@@ -7,15 +7,15 @@ import RNN_util
 reset_default_graph()
 
 # Parameters
-batch_size = 80
-display_step = 500
+batch_size = 50
+# display_step = 500
 # n_embedding = 1000 # ?
 hidden_layer_size = 1000
 input_size = 4096 # n_features
 target_size = 2 # n_classes
 learning_rate = 0.001
 reg_scale = 0.00001
-training_iters = 1000000
+training_iters = 10000
 
 def data_summary(data):
     summary = dict()
@@ -84,7 +84,7 @@ class DataBatchGenerator(object):
     def next_random_batch(self, batch_size, train_exclude=None):
         """ Return a batch of data randomly from training set.
         """
-        if train_exclude:
+        if train_exclude.any():
             ids = np.setdiff1d(self.train,train_exclude)
             len_choice = len(ids)
         else:
@@ -185,7 +185,8 @@ for epoch in xrange(training_iters):
     Train_accuracy = str(sess.run(accuracy, feed_dict={rnn._inputs: train_image, y: train_label}))
     Test_accuracy = str(sess.run(accuracy, feed_dict={rnn._inputs: test_image, y: test_label}))
 
-    print("\rIteration: %s Loss: %s Train Accuracy: %s Test Accuracy: %s" %
-          (epoch, Loss, Train_accuracy, Test_accuracy)),
+    if epoch % 50 == 0:
+        print("\rIteration: %s Loss: %s Train Accuracy: %s Test Accuracy: %s" \
+              %(epoch, Loss, Train_accuracy, Test_accuracy))
 
 

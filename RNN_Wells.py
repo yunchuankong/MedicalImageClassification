@@ -67,11 +67,11 @@ class DataBatchGenerator(object):
                 batch_images.append(self.images[id])
                 batch_labels.append(self.labels[id])
                 batch_seqlen.append(self.seqlen[id])
-            extr_batch_images, extr_batch_labels, extr_batch_seqlen = \
-                self.next_random_batch(batch_size-len(idx), train_exclude=np.setdiff1d(self.train,idx))
-            batch_images.append(extr_batch_images)
-            batch_labels.append(extr_batch_labels)
-            batch_seqlen.append(extr_batch_seqlen)
+            # extr_batch_images, extr_batch_labels, extr_batch_seqlen = \
+                # self.next_random_batch(batch_size-len(idx), train_exclude=np.setdiff1d(self.train,idx))
+            # batch_images.append(extr_batch_images)
+            # batch_labels.append(extr_batch_labels)
+            # batch_seqlen.append(extr_batch_seqlen)
             return batch_images, batch_labels, batch_seqlen
 
         idx = self.train[ batch_size * (batch_id-1): (batch_size * batch_id - 1) ]
@@ -181,7 +181,7 @@ for epoch in xrange(training_iters):
         batch_x, batch_y, batch_seqlen = dataset.next_batch(batch_size, i+1)
         sess.run(train_step, feed_dict={rnn._inputs: batch_x, y: batch_y})
 
-    Loss = str(sess.run(loss, feed_dict={rnn._inputs: batch_x, y: batch_x}))
+    Loss = str(sess.run(loss, feed_dict={rnn._inputs: batch_x, y: batch_y}))
     Train_accuracy = str(sess.run(accuracy, feed_dict={rnn._inputs: train_image, y: train_label}))
     Test_accuracy = str(sess.run(accuracy, feed_dict={rnn._inputs: test_image, y: test_label}))
 

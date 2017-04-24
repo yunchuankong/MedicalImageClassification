@@ -48,14 +48,14 @@ class DataBatchGenerator(object):
     def __init__(self, data, summary, test_prop=0.1):
         self.train_data = data['train']
         self.test_data = data['test']
-        self.images = []
-        self.labels = []
+        # self.images = []
+        # self.labels = []
         self.seqlen = summary["n_slices"]
         max_seq_len = summary["max_seq_len"]
-        for i in range(summary["len"]):
-            self.images.append(np.concatenate((data[i][0], np.zeros([max_seq_len - self.seqlen[i], n_features]))))
-            # pad each sequence to reach 'max_seq_len'
-            self.labels.append(data[i][1])
+        # for i in range(summary["len"]):
+        #     self.images.append(np.concatenate((data[i][0], np.zeros([max_seq_len - self.seqlen[i], n_features]))))
+        #     # pad each sequence to reach 'max_seq_len'
+        #     self.labels.append(data[i][1])
         # Obtain the training set and test set for RNN
         # self.test = np.random.choice(summary["len"], round(test_prop * summary["len"]), replace=False)
         # self.train = np.setdiff1d(np.array(range(summary["len"])), self.test)

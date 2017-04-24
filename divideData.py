@@ -8,6 +8,8 @@ def divide(dataset,train_prop = 0.9):
     n_case = len(ind_case)
     div_control = int(round(n_control * train_prop))
     div_case = int(round(n_case * train_prop))
+    print "n_control: ",n_control, ",n_case: ",n_case, \
+        ",train_control: ", div_control, ",train_case: ",div_case
     ind_train =  ind_control[:div_control] + ind_case[:div_case]
     ind_test =  ind_control[div_control:] + ind_case[div_case:]
     data = dict()

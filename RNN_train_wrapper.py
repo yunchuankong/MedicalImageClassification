@@ -64,9 +64,9 @@ class DataBatchGenerator(object):
         """ Return a batch of data for training.
         """
         len_train = len(self.train_data)
-        div = len_train * 2 / 3
-        batch_id = np.concatenate( (np.random.choice(len_train[:div], batch_size, replace=False),
-                                np.random.choice(len_train[div:], batch_size, replace=False)) )
+        div = len_train * 3 / 4
+        batch_id = np.concatenate( (np.random.choice(range(len_train)[:div], batch_size*3/4, replace=False),
+                                np.random.choice(range(len_train)[div:], batch_size/4, replace=False)) )
         batch_images = []
         batch_labels = []
         batch_seqlen = []
